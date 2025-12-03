@@ -110,20 +110,28 @@ def main():
                         input("Erro, este livro não exite! (ENTER para continuar)")
                         continue
 
-                    print(f"\nVocê selecionou o título: {chave} que possui {valor['exemplares']} quantidades")
+                    print(f"\nVocê selecionou o título: {att} que possui {livros[att]['exemplares']} quantidades")
                     att_nome = input("\nDigite o novo nome: ")
-                    att_qtd = int(input("Digite a nova quantidade: "))
+                    
+                    if att_nome != att and att_nome in livros:
+                        input("Erro: Já existe um livro com este nome. Tente novamente. (ENTER para continuar)")
+                    else:
+                        try:
+                            att_qtd = int(input("Digite a nova quantidade: "))
 
-                    print(f"\nLivro {att} atualizado com sucesso!")
-                    input("Pressione ENTER para voltar ao menu")
+                            dados = livros.pop(att) # apaga a chave do dict (nome do livro neste caso)
+                            # e mantem os demais valores salvos dentro do dict
+                            dados['exemplares'] = att_qtd # altera os "exemplares salvos" pelo novo valor (att_qtd)
+                            livros[att_nome] = dados # aqui o novo nome é adicionado na chave e é atribuido em seu valor
+                            # a variável dados, que nesse caso foi editada os 'exemplares' e manteve o 'autor' salvo s/alterar
 
-                    dados = livros.pop(chave) # apaga a chave do dict (nome do livro neste caso)
-                    # e mantem os demais valores salvos dentro do dict
+                            print(f"\nLivro {att} atualizado para {att_nome} com {att_qtd} exemplares.")
+                            
+                        except ValueError:
+                            input("Erro: A quantidade deve ser um número inteiro. Tente novamente. (ENTER para continuar)")
+                            continue
+                        input("Pressione ENTER para voltar ao menu")
 
-                    dados['exemplares'] = att_qtd # altera os "exemplares salvos" pelo novo valor (att_qtd)
-
-                    livros[att_nome] = dados # aqui o novo nome é adicionado na chave e é atribuido em seu valor
-                    # a variável dados, que nesse caso foi editada os 'exemplares' e manteve o 'autor' salvo s/alterar
 
             elif selecao == 5: # Empréstimo de livro
                 print("\n-----Empréstimo de livro-----")
